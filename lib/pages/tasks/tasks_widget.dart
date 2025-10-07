@@ -1,4 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -91,10 +92,11 @@ class _TasksWidgetState extends State<TasksWidget> {
           ),
         ),
         body: Align(
-          alignment: AlignmentDirectional(0.0, 0.0),
+          alignment: AlignmentDirectional(0.0, -1.0),
           child: Container(
             constraints: BoxConstraints(
               maxWidth: 400.0,
+              maxHeight: 720.0,
             ),
             decoration: BoxDecoration(),
             child: Padding(
@@ -201,6 +203,61 @@ class _TasksWidgetState extends State<TasksWidget> {
                           },
                         );
                       },
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional(0.0, 0.0),
+                    child: Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: GetRandomQuoteCall.call(),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 50.0,
+                                height: 50.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).primary,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          final textGetRandomQuoteResponse = snapshot.data!;
+
+                          return Text(
+                            valueOrDefault<String>(
+                              GetRandomQuoteCall.quote(
+                                textGetRandomQuoteResponse.jsonBody,
+                              ),
+                              'blah',
+                            ),
+                            textAlign: TextAlign.center,
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .fontStyle,
+                                ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ].divide(SizedBox(height: 12.0)),
